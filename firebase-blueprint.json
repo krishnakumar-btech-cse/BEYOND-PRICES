@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "Farmer": {
+      "title": "Farmer",
+      "description": "Profile of a farmer using the system.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "village": { "type": "string" },
+        "district": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "phone", "village"]
+    },
+    "Crop": {
+      "title": "Crop",
+      "description": "Information about a crop harvest.",
+      "type": "object",
+      "properties": {
+        "farmerId": { "type": "string" },
+        "cropName": { "type": "string" },
+        "quantity": { "type": "number" },
+        "harvestDate": { "type": "string" },
+        "hasStorage": { "type": "boolean" },
+        "travelRange": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["farmerId", "cropName", "quantity", "harvestDate"]
+    },
+    "Market": {
+      "title": "Market",
+      "description": "Information about a market node.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "totalStalls": { "type": "number" }
+      },
+      "required": ["name", "location", "totalStalls"]
+    },
+    "Stall": {
+      "title": "Stall",
+      "description": "A specific stall in a market at a specific time slot.",
+      "type": "object",
+      "properties": {
+        "marketId": { "type": "string" },
+        "stallNumber": { "type": "string" },
+        "slotTime": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "booked"] }
+      },
+      "required": ["marketId", "stallNumber", "slotTime", "status"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "A record of a stall booking by a farmer.",
+      "type": "object",
+      "properties": {
+        "farmerId": { "type": "string" },
+        "marketId": { "type": "string" },
+        "stallId": { "type": "string" },
+        "slotTime": { "type": "string" },
+        "bookingDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["confirmed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["farmerId", "marketId", "stallId", "slotTime", "bookingDate", "status"]
+    }
+  },
+  "firestore": {
+    "/farmers/{farmerId}": {
+      "schema": "Farmer",
+      "description": "Collection of farmer profiles."
+    },
+    "/crops/{cropId}": {
+      "schema": "Crop",
+      "description": "Collection of crop harvest data."
+    },
+    "/markets/{marketId}": {
+      "schema": "Market",
+      "description": "Collection of market nodes."
+    },
+    "/markets/{marketId}/stalls/{stallId}": {
+      "schema": "Stall",
+      "description": "Sub-collection of stalls for a market."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Collection of stall bookings."
+    }
+  }
+}
